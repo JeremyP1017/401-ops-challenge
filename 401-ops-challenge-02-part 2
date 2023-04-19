@@ -1,7 +1,20 @@
-import smtplib
 import datetime
+import ping3
 import time
 import socket
+import smtplib
+
+ip_address = "8.8.8.8cd"  # Replace with the IP address you want to ping
+status = "why so sad"
+
+while True:
+    response_time = ping3.ping(ip_address)
+    if response_time is not None:
+        status = "Network Active"
+    else:
+        status = "Network Error"
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"), status, "to", ip_address)
+    time.sleep(2)
 
 # Function to send email notification
 def send_notification(from_address, to_address, password, subject, body):
@@ -18,11 +31,11 @@ def send_notification(from_address, to_address, password, subject, body):
         server.quit()
 
 # Ask for user's email address and password
-from_address = input("Enter your email address: ")
-password = input("Enter your email password: ")
+from_address = input("Jeremypatton6@gmail.com: ")
+password = input("*********: ")
 
 # Set the email recipient address
-to_address = "administrator@example.com"
+to_address = "Jeremypatton6@gmail.com"
 
 # Set the initial host status
 host_status = False
