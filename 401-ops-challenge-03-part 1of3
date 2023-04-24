@@ -1,0 +1,75 @@
+from cryptography.fernet import Fernet
+import os
+
+# Prompt the user to select a mode
+mode = int(input("Select a mode: 1. Encrypt a file 2. Decrypt a file 3. Encrypt a message 4. Decrypt a message: "))
+
+# Prompt the user to provide a filepath or cleartext string
+if mode in [1, 2]:
+    filepath = input("Enter the filepath of the target file: ")
+else:
+    message = input("Enter the cleartext string: ")
+
+# Function to generate a key
+def generate_key():
+    key = Fernet.generate_key()
+    with open("key.key", "wb") as key_file:
+        key_file.write(key)
+
+# Function to load the key
+def load_key():
+    return open("key.key", "rb").read()
+
+# Function to encrypt a file
+def encrypt_file(filepath, key):
+    with open(filepath, "rb") as f:
+        data = f.read()
+    fernet = Fernet(key)
+    encrypted = fernet.encrypt(data)
+    with open(filepath, "wb") as f:
+        f.write(encrypted)
+
+# Function to decrypt a file
+def decrypt_file(filepath, key):
+    with open(filepath, "rb") as f:
+        data = f.read()
+    fernet = Fernet(key)
+    decrypted = fernet.decrypt(data)
+    with open(filepath, "wb") as f:
+        f.write(decrypted)
+
+# Function to encrypt a string
+def encrypt_message(message, key):
+    fernet = Fernet(key)
+    encrypted = fernet.encrypt(message.encode())
+    print("Ciphertext: ", encrypted.decode())
+
+# Function to decrypt a string
+def decrypt_message(ciphertext, key):
+    fernet = Fernet(key)
+    decrypted = fernet.decrypt(ciphertext.encode())
+    print("Cleartext: ", decrypted.decode())
+
+# Generate a key if it does not exist
+if not os.path.exists("key.key"):
+    generate_key()
+
+# Load the key
+key = load_key()
+
+# Perform the appropriate action based on the selected mode
+if mode == 1:
+    encrypt_file(filepath, key)
+    print("File encrypted successfully!")
+elif mode == 2:
+    decrypt_file(filepath, key)
+    print("File decrypted successfully!")
+elif mode == 3:
+    encrypt_message(message, key)
+elif mode == 4:
+    ciphertext = input("Enter the ciphertext: ")
+    decrypt_message(ciphertext, key)
+else:
+    print("Invalid mode selected. Please select a valid mode (1-4).")
+
+#chat gpt helped write this script
