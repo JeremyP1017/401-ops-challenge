@@ -1,0 +1,35 @@
+
+
+# Define the encryption and decryption functions
+def encrypt_decrypt_file(filename, key, mode):
+    f = fernet.Fernet(key)
+    with open(filename, "rb") as file:
+        # Read the file's contents
+        file_contents = file.read()
+        # Encrypt or decrypt the contents depending on the mode
+        if mode == 'encrypt':
+            contents = f.encrypt(file_contents)
+        else:
+            contents = f.decrypt(file_contents)
+    with open(filename, "wb") as file:
+        # Write the new contents back to the file
+        file.write(contents)
+
+# Define the recursive encryption and decryption functions
+def encrypt_decrypt_directory(directory_path, key, mode):
+    # Iterate through all files and subfolders in the directory
+    for item in os.listdir(directory_path):
+        item_path = os.path.join(directory_path, item)
+        if os.path.isdir(item_path):
+            # Recursively encrypt or decrypt any subfolders
+            encrypt_decrypt_directory(item_path, key, mode)
+        else:
+            # Encrypt or decrypt any files depending on the mode
+            if mode == 'encrypt':
+                encrypt_decrypt_file(item_path, key, 'encrypt')
+            elif mode == 'decrypt' and item_path.endswith(".encrypted"):
+                encrypt_decrypt_file(item_path, key, 'decrypt')
+                # Rename the decrypted file to remove the ".encrypted" extension
+                os.rename(item_path, item_path[:-10])
+
+#this script was writen with the help of chatgpt
