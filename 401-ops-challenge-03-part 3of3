@@ -1,0 +1,44 @@
+import ctypes
+
+# Function to change the desktop wallpaper
+def change_wallpaper(image_path):
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
+
+# Function to create a popup window with a message
+def popup_message(whos your daddy):
+    ctypes.windll.user32.MessageBoxW(0, message, "Popup Message", 0)
+
+# Main function to run the simulation
+def run_simulation():
+    # Prompt user to select simulation option
+    print("Select a simulation option:")
+    print("1. Encrypt a file")
+    print("2. Decrypt a file")
+    print("3. Simulate ransomware attack")
+
+    # Get user input
+    option = input("Enter option number: ")
+
+    # Execute selected option
+    if option == "1":
+        # Call encryption function
+        encrypt_file()
+    elif option == "2":
+        # Call decryption function
+        decrypt_file()
+    elif option == "3":
+        # Change desktop wallpaper
+        change_wallpaper("C:/path/to/ransomware/image.jpg")
+
+        # Create popup message
+        popup_message("Your computer has been infected with ransomware!")
+
+    else:
+        print("Invalid option selected")
+
+# Run simulation
+run_simulation()
+
+
+this script was writen with the help of chat gpt
