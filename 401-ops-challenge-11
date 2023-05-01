@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+from scapy.all import *
+
+# Define host IP
+host = "127.0.0.1"
+
+# Define port range to scan
+start_port = 1
+end_port = 100
+
+# Test each port in the specified range
+for port in range(start_port, end_port+1):
+    # Build the packet
+    packet = IP(dst=host)/TCP(dport=port, flags="S")
+
+    # Send the packet and wait for a response
+    response = sr1(packet, timeout=1, verbose=0)
+
+    if response is None:
+        # No response, port is filtered
+        print("Port {} is filtered".format(port))
+    elif response.haslayer(TCP):
+        if response[TCP].flags == 0x12:
+            # Open port, send RST packet to close the connection
+            send(IP(dst=host)/TCP(dport=port, flags="AR"), verbose=0)
+            print("Port {} is open".format(port))
+        elif response[TCP].flags == 0x14:
+            # Closed port
+            print("Port {} is closed".format(port))
+
+Sources reddit,chatgpt
