@@ -1,0 +1,32 @@
+import os
+import platform
+import subprocess
+
+def ping(host):
+    """Send ICMP ping request to host"""
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+    command = ['ping', param,'1', host]
+    return subprocess.call(command, stdout=subprocess.DEVNULL) == 0
+
+def ping_sweep(network):
+    """Ping all hosts on network and return online hosts"""
+    ip, cidr = network.split('/')
+    mask = (1 << 32) - (1 << 32 - int(cidr))
+    network_addr = int.from_bytes(socket.inet_aton(ip), byteorder='big') & mask
+    num_hosts = mask - 1
+    online_hosts = []
+    for i in range(num_hosts):
+        host = socket.inet_ntoa((network_addr + i + 1).to_bytes(4, byteorder='big'))
+        if ping(host):
+            print(f'{host} is online.')
+            online_hosts.append(host)
+        else:
+            print(f'{host} is down or unresponsive.')
+    print(f'Total of {len(online_hosts)} hosts are online.')
+    return online_hosts
+
+if __name__ == '__main__':
+    network = input('Enter network address with CIDR block (e.g. 10.10.0.0/24): ')
+    online_hosts = ping_sweep(network)
+
+sources: reddit & chatgpt
