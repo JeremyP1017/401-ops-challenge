@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
+
 import os
 import platform
 import subprocess
+import socket
 
 def ping(host):
     """Send ICMP ping request to host"""
