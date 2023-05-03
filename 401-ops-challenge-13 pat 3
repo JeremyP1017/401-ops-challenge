@@ -1,0 +1,43 @@
+import os
+import platform
+import socket
+import subprocess
+
+# Define the port scanning function
+def scan_ports(host):
+    """Scan commonly used ports on a host"""
+    open_ports = []
+    for port in [21, 22, 23, 25, 53, 80, 110, 139, 143, 443, 445, 3389]:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        result = sock.connect_ex((host, port))
+        if result == 0:
+            open_ports.append(port)
+        sock.close()
+    return open_ports
+
+# Send ICMP ping request to host
+def ping(host):
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+    command = ['ping', param,'1', host]
+    return subprocess.call(command, stdout=subprocess.DEVNULL) == 0
+
+# Prompt the user for an IP address to target
+ip_address = input('Enter IP address to target: ')
+
+# Ping the host to see if it's online
+if ping(ip_address):
+    print(f'{ip_address} is online.')
+
+    # Scan for open ports
+    open_ports = scan_ports(ip_address)
+    if open_ports:
+        print(f'The following ports are open on {ip_address}:')
+        for port in open_ports:
+            print(f'Port {port} is open.')
+    else:
+        print(f'No open ports found on {ip_address}.')
+else:
+    print(f'{ip_address} is down or unresponsive.')
+    
+    this script was written with the help of chat gpt
