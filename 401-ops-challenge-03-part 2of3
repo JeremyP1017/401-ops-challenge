@@ -1,8 +1,12 @@
 
 
+import os
+import sys
+from cryptography.fernet import Fernet
+
 # Define the encryption and decryption functions
 def encrypt_decrypt_file(filename, key, mode):
-    f = fernet.Fernet(key)
+    f = Fernet(key)
     with open(filename, "rb") as file:
         # Read the file's contents
         file_contents = file.read()
@@ -31,5 +35,28 @@ def encrypt_decrypt_directory(directory_path, key, mode):
                 encrypt_decrypt_file(item_path, key, 'decrypt')
                 # Rename the decrypted file to remove the ".encrypted" extension
                 os.rename(item_path, item_path[:-10])
+
+if __name__ == '__main__':
+    # Get the encryption or decryption key from the user
+    key = input('Enter the encryption or decryption key: ')
+    if not key:
+        print('Key is required to encrypt or decrypt files.')
+        sys.exit()
+    key = key.encode()
+
+    # Get the directory path from the user
+    directory_path = input('Enter the directory path to encrypt or decrypt: ')
+    if not directory_path:
+        print('Directory path is required to encrypt or decrypt files.')
+        sys.exit()
+
+    # Get the mode from the user
+    mode = input('Enter "encrypt" to encrypt files or "decrypt" to decrypt files: ')
+    if mode not in ['encrypt', 'decrypt']:
+        print('Invalid mode specified. Please enter "encrypt" or "decrypt".')
+        sys.exit()
+
+    # Encrypt or decrypt the directory recursively
+    encrypt_decrypt_directory(directory_path, key, mode)
 
 #this script was writen with the help of chatgpt
