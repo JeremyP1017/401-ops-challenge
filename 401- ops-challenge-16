@@ -1,0 +1,33 @@
+import time
+
+def offensive_mode():
+    wordlist_path = input("Enter word list file path: ")
+    delay = int(input("Enter delay between words (in seconds): "))
+
+    with open(wordlist_path, 'r') as f:
+        for word in f:
+            word = word.strip()
+            print(word)
+            time.sleep(delay)
+
+def defensive_mode():
+    user_input = input("Enter a string: ")
+    wordlist_path = input("Enter word list file path: ")
+
+    with open(wordlist_path, 'r') as f:
+        wordlist = f.read().splitlines()
+        if user_input in wordlist:
+            print("Password recognized")
+        else:
+            print("Password not recognized")
+
+mode = input("Select a mode (1 for Offensive, 2 for Defensive): ")
+
+if mode == '1':
+    offensive_mode()
+elif mode == '2':
+    defensive_mode()
+else:
+    print("Invalid mode selected")
+
+#this script was writen with the help of chat gpt
