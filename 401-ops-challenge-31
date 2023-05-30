@@ -1,0 +1,33 @@
+import os
+
+# Prompt the user to enter a file name to search for
+file_name = input("Enter the file name to search for: ")
+
+# Prompt the user to enter a directory to search in
+directory = input("Enter the directory to search in: ")
+
+# Initialize counters
+files_searched = 0
+hits_found = 0
+
+# Search for the file in the directory
+for root, dirs, files in os.walk(directory):
+    for file in files:
+        if file == file_name:
+            file_path = os.path.join(root, file)
+            print("Found:", file_path)
+            hits_found += 1
+        files_searched += 1
+
+# Print the search summary
+print("\nSearch Summary:")
+print("Files searched:", files_searched)
+print("Hits found:", hits_found)
+
+To execute this script on Ubuntu Linux, you can run it using:
+python3 script.py
+
+On Windows 10, you can run it using:
+python script.py
+
+#this script was written with the help if chat gpt.
