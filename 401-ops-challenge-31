@@ -24,10 +24,10 @@ print("\nSearch Summary:")
 print("Files searched:", files_searched)
 print("Hits found:", hits_found)
 
-To execute this script on Ubuntu Linux, you can run it using:
+#To execute this script on Ubuntu Linux, you can run it using:
 python3 script.py
 
-On Windows 10, you can run it using:
+#On Windows 10, you can run it using:
 python script.py
 
 #this script was written with the help if chat gpt.
