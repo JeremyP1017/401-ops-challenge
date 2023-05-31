@@ -1,0 +1,51 @@
+import os
+import hashlib
+from datetime import datetime
+
+# Prompt the user to enter a directory to search in
+directory = input("Enter the directory to search in: ")
+
+# Initialize counters
+files_searched = 0
+hits_found = 0
+
+# Search for files in the directory
+for root, dirs, files in os.walk(directory):
+    for file in files:
+        file_path = os.path.join(root, file)
+        files_searched += 1
+
+        try:
+            # Generate MD5 hash for the file
+            with open(file_path, 'rb') as f:
+                md5_hash = hashlib.md5()
+                while True:
+                    data = f.read(4096)
+                    if not data:
+                        break
+                    md5_hash.update(data)
+
+            # Get file information
+            file_name = os.path.basename(file_path)
+            file_size = os.path.getsize(file_path)
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            # Print file information
+            print(f"Timestamp: {timestamp}")
+            print(f"File Name: {file_name}")
+            print(f"File Size: {file_size} bytes")
+            print(f"File Path: {file_path}")
+            print(f"MD5 Hash: {md5_hash.hexdigest()}")
+            print("---------------------------------------")
+
+            hits_found += 1
+
+        except IOError:
+            print(f"Error accessing file: {file_path}")
+
+# Print the search summary
+print("\nSearch Summary:")
+print("Files searched:", files_searched)
+print("Hits found:", hits_found)
+
+#this script was written with the help of chatgpt.
