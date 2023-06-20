@@ -1,6 +1,7 @@
 import os
 import hashlib
 import requests
+from datetime import datetime
 
 # Prompt the user to enter a directory to search in
 directory = input("Enter the directory to search in: ")
@@ -67,6 +68,7 @@ for root, dirs, files in os.walk(directory):
 print("\nSearch Summary:")
 print("Files searched:", files_searched)
 print("Hits found:", hits_found)
+
 
 
 #this script was written with the help of chat gpt
