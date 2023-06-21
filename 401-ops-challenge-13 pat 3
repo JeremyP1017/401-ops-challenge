@@ -19,7 +19,7 @@ def scan_ports(host):
 # Send ICMP ping request to host
 def ping(host):
     param = '-n' if platform.system().lower() == 'windows' else '-c'
-    command = ['ping', param,'1', host]
+    command = ['ping', param, '1', host]
     return subprocess.call(command, stdout=subprocess.DEVNULL) == 0
 
 # Prompt the user for an IP address to target
@@ -39,5 +39,6 @@ if ping(ip_address):
         print(f'No open ports found on {ip_address}.')
 else:
     print(f'{ip_address} is down or unresponsive.')
+
     
     this script was written with the help of chat gpt
